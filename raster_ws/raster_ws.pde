@@ -20,6 +20,21 @@ boolean debug = true;
 // 3. Use FX2D, JAVA2D, P2D or P3D
 String renderer = P3D;
 
+
+float vX1;
+float vX2;
+float vX3;
+
+float vY1;
+float vY2;
+float vY3;
+
+float minX;
+float maxX;
+float minY;
+float maxY;
+
+
 void setup() {
   //use 2^n to change the dimensions
   size(1024, 1024, renderer);
@@ -73,13 +88,58 @@ void draw() {
 void triangleRaster() {
   // frame.coordinatesOf converts from world to frame
   // here we convert v1 to illustrate the idea
+  pushStyle();
+  stroke(0, 255, 255, 125);
+  
+  minX = min(frame.coordinatesOf(v1).x(), frame.coordinatesOf(v2).x(), frame.coordinatesOf(v3).x());
+  maxX = max(frame.coordinatesOf(v1).x(), frame.coordinatesOf(v2).x(), frame.coordinatesOf(v3).x());
+  minY = min(frame.coordinatesOf(v1).y(), frame.coordinatesOf(v2).y(), frame.coordinatesOf(v3).y());
+  maxY = max(frame.coordinatesOf(v1).y(), frame.coordinatesOf(v2).y(), frame.coordinatesOf(v3).y());
+  
+  pushStyle();
+  noFill();
+  strokeWeight(5);
+  stroke(0, 255, 255); 
+  
+  for(float x = minX; x<= maxX; ++x){
+    for(float y = minY; y<= maxY; ++y){
+       if(insideOutside(v1,v3,new Vector(x,y))&&insideOutside(v1,v2,new Vector(x,y))&&insideOutside(v3,v2,new Vector(x,y)))
+         point(x,y);
+    }  
+  }
+  popStyle();
+
+  popStyle();
+   
   if (debug) {
     pushStyle();
     stroke(255, 255, 0, 125);
-    point(round(frame.coordinatesOf(v1).x()), round(frame.coordinatesOf(v1).y()));
+    point((frame.coordinatesOf(v1).x()),(frame.coordinatesOf(v1).y()));
+    point((frame.coordinatesOf(v2).x()),(frame.coordinatesOf(v2).y()));
+    point((frame.coordinatesOf(v3).x()),(frame.coordinatesOf(v3).y()));
     popStyle();
   }
+
 }
+
+boolean insideOutside(Vector v1, Vector v3, Vector x){
+  
+  boolean xfound = false;
+  boolean yfound = false;
+  
+  for( float a = 0; a<= 1; a+=0.1){
+    for(float b = 0; b<= 1; b+= 0.1){
+      if (frame.coordinatesOf(v1).x()*a + frame.coordinatesOf(v3).x()*b == frame.coordinatesOf(x).x())
+          xfound = true;
+      if (frame.coordinatesOf(v1).y()*a + frame.coordinatesOf(v3).y()*b == frame.coordinatesOf(x).y())
+          //yfound = true;
+      if(xfound == yfound == true)
+        return true;
+    }
+  }
+  return false;
+}
+
 
 void randomizeTriangle() {
   int low = -width/2;
