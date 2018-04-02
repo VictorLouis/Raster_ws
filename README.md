@@ -22,11 +22,11 @@ Complete la tabla:
 
 | Integrante | github nick |
 |------------|-------------|
-|            |             |
+|  Victor Luis Angulo Tovar          |    VictorLouis         |
 
 ## Discusión
 
-Describa los resultados obtenidos. Qué técnicas de anti-aliasing y shading se exploraron? Adjunte las referencias. Discuta las dificultades encontradas.
+La principal dificultad que se tiene es que al trabajar con floats siempre quedan margenes de error, para el antialiasing me inspire en  [este tutorial](http://www.dreamincode.net/forums/topic/388729-anti-aliasing/)
 
 ## Entrega
 
